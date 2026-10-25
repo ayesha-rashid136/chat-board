@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en" class="pink">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP CHAT BOARD - Luxury Pink Velvet Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        velvet: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843',
+                            950: '#4c0519',
+                        }
+                    },
+                    boxShadow: {
+                        'glow-pink': '0 0 25px -5px rgba(236, 72, 153, 0.5)',
+                        'glow-rose': '0 0 35px -5px rgba(225, 29, 72, 0.6)',
+                        'glass-card': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%': { opacity: '0.4', filter: 'blur(40px)' },
+                            '100%': { opacity: '0.8', filter: 'blur(60px)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Custom Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(236, 72, 153, 0.3);
+            border-radius: 20px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(236, 72, 153, 0.7);
+        }
+
+        /* Ambient Glassmorphism Elements */
+        .glass-panel {
+            background: rgba(23, 7, 20, 0.65);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(244, 114, 182, 0.18);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(244, 114, 182, 0.15);
+        }
+
+        .glass-card-hover:hover {
+            background: rgba(244, 114, 182, 0.08);
+            border-color: rgba(244, 114, 182, 0.35);
+        }
+
+        .glass-modal {
+            background: rgba(15, 3, 14, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(244, 114, 182, 0.25);
+        }
+
+        /* Theme Dynamics */
+        html.pink body {
+            background: #0d030c;
+            color: #fce7f3;
+        }
+        html.pink .bg-main-app { background-color: rgba(18, 5, 16, 0.85); }
+        html.pink .bg-panel-bg { background-color: rgba(28, 8, 25, 0.8); }
+        html.pink .bg-bubble-in { background: rgba(38, 12, 34, 0.95); color: #fce7f3; border: 1px solid rgba(244, 114, 182, 0.18); }
+        html.pink .bg-bubble-out { background: linear-gradient(135deg, #db2777 0%, #9d174d 100%); color: #ffffff; box-shadow: 0 4px 20px rgba(219, 39, 119, 0.35); }
+
+        html.dark body {
+            background: #09090b;
+            color: #f4f4f5;
+        }
+        html.dark .bg-main-app { background-color: #121215; }
+        html.dark .bg-panel-bg { background-color: #18181b; }
+        html.dark .bg-bubble-in { background-color: #27272a; color: #f4f4f5; border: 1px solid rgba(255, 255, 255, 0.08); }
+        html.dark .bg-bubble-out { background: linear-gradient(135deg, #3f3f46 0%, #18181b 100%); color: #ffffff; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
+
+        html.light body {
+            background: #fdf2f8;
+            color: #1f2937;
+        }
+        html.light .bg-main-app { background-color: #ffffff; }
+        html.light .bg-panel-bg { background-color: #fce7f3; }
+        html.light .bg-bubble-in { background-color: #ffffff; color: #111827; border: 1px solid rgba(244, 114, 182, 0.25); }
+        html.light .bg-bubble-out { background: linear-gradient(135deg, #f472b6 0%, #db2777 100%); color: #ffffff; box-shadow: 0 4px 15px rgba(244, 114, 182, 0.3); }
+
+        /* Animation Keyframe for Progress */
+        @keyframes progressAnimation {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .animate-status-progress {
+            animation: progressAnimation 5s linear forwards;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex items-center justify-center p-0 md:p-4 lg:p-6 relative selection:bg-pink-500 selection:text-white">
+
+    <!-- Ambient Glowing Background Spheres -->
+    <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-pink-600/30 rounded-full animate-pulse-glow pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-900/30 rounded-full animate-pulse-glow pointer-events-none z-0" style="animation-delay: 1.5s;"></div>
+    <div class="fixed top-[30%] right-[20%] w-[350px] h-[350px] bg-rose-500/20 rounded-full animate-pulse-glow pointer-events-none z-0" style="animation-delay: 2.5s;"></div>
+
+    <!-- ================= ENTRY GATEKEEPER MODAL ================= -->
+    <div id="gatekeeperScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-2xl">
+        <div class="glass-modal rounded-3xl p-6 md:p-8 w-full max-w-md shadow-2xl shadow-pink-950/80 border border-pink-500/30 relative overflow-hidden animate-float">
+            <!-- Decorative Header Gradient -->
+            <div class="absolute -top-12 -right-12 w-32 h-32 bg-pink-500/30 rounded-full blur-2xl"></div>
+            
+            <div class="text-center mb-6 relative z-10">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-3xl bg-gradient-to-tr from-pink-600 via-rose-500 to-pink-400 p-0.5 shadow-glow-pink">
+                    <div class="w-full h-full bg-slate-950 rounded-[22px] flex items-center justify-center text-pink-400">
+                        <i class="fas fa-crown text-3xl"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-pink-400 to-rose-300 tracking-tight">
+                    VIP CHAT BOARD
+                </h2>
+                <p class="text-xs text-pink-200/70 mt-1.5 font-medium">Please enter your credentials to unlock the VIP workspace.</p>
+            </div>
+
+            <form onsubmit="submitGatekeeperForm(event)" class="space-y-4 relative z-10">
+                <div>
+                    <label class="block text-[11px] font-bold text-pink-300 uppercase tracking-wider mb-1.5 pl-1">Full Name *</label>
+                    <div class="relative">
+                        <i class="fas fa-user absolute left-3.5 top-3 text-pink-400/60 text-xs"></i>
+                        <input type="text" id="frontName" required placeholder="e.g. Ayesha Khan" class="w-full pl-9 pr-4 py-2.5 bg-black/40 rounded-xl text-xs border border-pink-500/30 focus:outline-none focus:ring-2 focus:ring-pink-500 text-pink-100 placeholder-pink-300/30 transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-pink-300 uppercase tracking-wider mb-1.5 pl-1">Mobile Number *</label>
+                    <div class="relative">
+                        <i class="fas fa-phone absolute left-3.5 top-3 text-pink-400/60 text-xs"></i>
+                        <input type="tel" id="frontPhone" required placeholder="e.g. +92 300 1234567" class="w-full pl-9 pr-4 py-2.5 bg-black/40 rounded-xl text-xs border border-pink-500/30 focus:outline-none focus:ring-2 focus:ring-pink-500 text-pink-100 placeholder-pink-300/30 transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-pink-300 uppercase tracking-wider mb-1.5 pl-1">Email Address *</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-3.5 top-3 text-pink-400/60 text-xs"></i>
+                        <input type="email" id="frontEmail" required placeholder="e.g. ayesha@vip.com" class="w-full pl-9 pr-4 py-2.5 bg-black/40 rounded-xl text-xs border border-pink-500/30 focus:outline-none focus:ring-2 focus:ring-pink-500 text-pink-100 placeholder-pink-300/30 transition">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-pink-600 via-rose-600 to-pink-500 hover:from-pink-500 hover:to-rose-500 text-white font-extrabold text-xs tracking-wider uppercase rounded-xl shadow-glow-pink transition duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-2">
+                    <i class="fas fa-sparkles"></i> Enter VIP Lounge
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MAIN CHAT CONTAINER ================= -->
+    <div id="app" class="flex w-full h-full max-w-[1600px] mx-auto rounded-2xl md:rounded-3xl glass-panel shadow-2xl overflow-hidden relative z-10 border border-pink-500/20">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside id="sidebar" class="w-full md:w-[380px] lg:w-[420px] bg-panel-bg flex flex-col border-r border-pink-500/20 transition-all duration-300 z-20 absolute md:relative inset-0 md:inset-auto">
+            
+            <!-- Profile Header -->
+            <div class="p-4 bg-black/20 flex justify-between items-center border-b border-pink-500/20">
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="openFrontGatekeeper()">
+                    <div class="relative">
+                        <img id="myAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80" class="w-11 h-11 rounded-full object-cover border-2 border-pink-500 shadow-glow-pink group-hover:scale-105 transition duration-200" alt="Profile">
+                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-black animate-pulse"></span>
+                    </div>
+                    <div>
+                        <h2 id="myProfileName" class="font-extrabold text-sm leading-tight flex items-center gap-1.5 text-pink-300">
+                            VIP User <i class="fas fa-crown text-amber-400 text-xs"></i>
+                        </h2>
+                        <span id="myProfileBio" class="text-[11px] text-pink-200/70 font-medium flex items-center gap-1 truncate max-w-[140px]">
+                            Online & Ready
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Theme & Actions Buttons -->
+                <div class="flex items-center space-x-1 bg-black/30 p-1 rounded-2xl border border-pink-500/20">
+                    <button onclick="cycleTheme()" class="w-8 h-8 flex items-center justify-center hover:bg-pink-500/20 rounded-xl transition text-pink-300" title="Switch Velvet Theme">
+                        <i class="fas fa-palette text-xs"></i>
+                    </button>
+                    <button onclick="openFrontGatekeeper()" class="w-8 h-8 flex items-center justify-center hover:bg-pink-500/20 rounded-xl transition text-pink-300" title="Edit Profile">
+                        <i class="fas fa-user-edit text-xs"></i>
+                    </button>
+                    <button onclick="openAddContactModal()" class="w-8 h-8 flex items-center justify-center hover:bg-pink-500/20 rounded-xl transition text-pink-300" title="Add Contact">
+                        <i class="fas fa-user-plus text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STORIES / STATUS BAR -->
+            <div class="px-4 py-3 border-b border-pink-500/20 bg-black/10">
+                <div class="flex items-center justify-between mb-2.5">
+                    <span class="text-[11px] font-black uppercase tracking-widest text-pink-400 flex items-center gap-1.5">
+                        <i class="fas fa-circle-notch text-pink-500 animate-spin" style="animation-duration: 8s;"></i> Velvet Stories
+                    </span>
+                    <button onclick="triggerStatusUpload()" class="text-[10px] font-bold text-pink-300 hover:text-white bg-pink-600/30 hover:bg-pink-600 px-2.5 py-1 rounded-full border border-pink-500/40 transition flex items-center gap-1">
+                        <i class="fas fa-plus"></i> Add Status
+                    </button>
+                    <input type="file" id="statusUploadInput" class="hidden" accept="image/*" onchange="handleAddStatus(event)">
+                </div>
+
+                <!-- Horizontal Status Carousel -->
+                <div id="statusList" class="flex space-x-3 overflow-x-auto py-1 no-scrollbar">
+                    <!-- Dynamic Stories Inserted Here -->
+                </div>
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="p-3 bg-black/10 border-b border-pink-500/20">
+                <div class="relative flex items-center mb-2.5">
+                    <i class="fas fa-search absolute left-3.5 text-pink-400/60 text-xs"></i>
+                    <input id="searchInput" type="text" onkeyup="filterChats()" placeholder="Search contacts & chats..." 
+                        class="w-full pl-9 pr-4 py-2 bg-black/30 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-pink-500/50 border border-pink-500/20 transition text-pink-100 placeholder-pink-300/30">
+                </div>
+                <div class="flex space-x-1.5 overflow-x-auto no-scrollbar">
+                    <button onclick="setFilter('all')" id="filter-all" class="px-3 py-1 text-[11px] rounded-xl bg-pink-600 text-white font-bold shadow-glow-pink">All</button>
+                    <button onclick="setFilter('unread')" id="filter-unread" class="px-3 py-1 text-[11px] rounded-xl bg-black/30 text-pink-300 font-semibold hover:bg-pink-500/20 border border-pink-500/20">Unread</button>
+                    <button onclick="setFilter('locked')" id="filter-locked" class="px-3 py-1 text-[11px] rounded-xl bg-black/30 text-pink-300 font-semibold hover:bg-pink-500/20 border border-pink-500/20 flex items-center gap-1">
+                        <i class="fas fa-lock text-[9px]"></i> Locked
+                    </button>
+                    <button onclick="setFilter('blocked')" id="filter-blocked" class="px-3 py-1 text-[11px] rounded-xl bg-black/30 text-rose-300 font-semibold hover:bg-rose-500/20 border border-rose-500/20 flex items-center gap-1">
+                        <i class="fas fa-ban text-[9px]"></i> Blocked
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contact / Chat List -->
+            <div id="chatList" class="flex-1 overflow-y-auto divide-y divide-pink-500/10">
+                <!-- Dynamically Rendered Contact Cards -->
+            </div>
+        </aside>
+
+        <!-- ================= MAIN CHAT AREA ================= -->
+        <main id="chatWindow" class="flex-1 bg-main-app flex flex-col h-full relative">
+            
+            <!-- Default Placeholder Screen -->
+            <div id="noChatSelected" class="flex-1 flex flex-col items-center justify-center p-8 text-center bg-black/10 z-10">
+                <div class="w-24 h-24 mb-6 rounded-3xl bg-gradient-to-tr from-pink-600 via-rose-500 to-pink-400 p-1 shadow-glow-pink animate-float">
+                    <div class="w-full h-full bg-slate-950 rounded-[22px] flex items-center justify-center text-pink-400">
+                        <i class="fas fa-comments text-4xl"></i>
+                    </div>
+                </div>
+                <h1 class="text-2xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-rose-300">
+                    VIP Velvet Chat Room
+                </h1>
+                <p class="text-xs text-pink-200/70 max-w-sm mb-6 leading-relaxed font-medium">
+                    Select a conversation from the sidebar to chat, reply, react, or share status updates with luxury glassmorphism vibes.
+                </p>
+                <button onclick="openFrontGatekeeper()" class="px-5 py-2.5 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white rounded-xl text-xs font-extrabold shadow-glow-pink transition transform hover:-translate-y-0.5">
+                    <i class="fas fa-user-circle mr-1.5"></i> Update VIP Profile
+                </button>
+            </div>
+
+            <!-- Active Chat Interface Container -->
+            <div id="activeChatContainer" class="hidden flex-1 flex flex-col h-full">
+                
+                <!-- Chat Header -->
+                <header class="px-5 py-3.5 bg-panel-bg flex justify-between items-center border-b border-pink-500/20 z-10 shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <button onclick="backToSidebar()" class="md:hidden text-pink-400 pr-2 text-base">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <div class="relative cursor-pointer">
+                            <img id="chatHeaderAvatar" src="" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500/60 shadow-md" alt="Avatar">
+                            <span id="chatHeaderStatusDot" class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-black"></span>
+                        </div>
+                        <div>
+                            <h3 id="chatHeaderName" class="font-extrabold text-sm leading-tight text-pink-200 flex items-center gap-2">
+                                Contact Name
+                            </h3>
+                            <p id="chatHeaderSubtext" class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
+                                <i class="fas fa-circle text-[6px] animate-pulse"></i> Active Now
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Header Options -->
+                    <div class="flex items-center space-x-1 bg-black/20 p-1 rounded-2xl border border-pink-500/20">
+                        <button onclick="startCall('video')" class="w-8 h-8 flex items-center justify-center hover:bg-pink-500/20 rounded-xl transition text-pink-300" title="Video Call">
+                            <i class="fas fa-video text-xs"></i>
+                        </button>
+                        <button onclick="startCall('voice')" class="w-8 h-8 flex items-center justify-center hover:bg-pink-500/20 rounded-xl transition text-pink-300" title="Voice Call">
+                            <i class="fas fa-phone text-xs"></i>
+                        </button>
+                        <button onclick="toggleChatLockCurrent()" class="w-8 h-8 flex items-center justify-center hover:bg-pink-500/20 rounded-xl transition text-pink-300" title="Toggle Lock Chat">
+                            <i id="headerLockIcon" class="fas fa-unlock text-xs"></i>
+                        </button>
+                        <button id="blockToggleBtn" onclick="toggleBlockContact()" class="w-8 h-8 flex items-center justify-center hover:bg-rose-500/20 rounded-xl transition text-rose-400" title="Block / Unblock">
+                            <i id="headerBlockIcon" class="fas fa-ban text-xs"></i>
+                        </button>
+                        <button onclick="clearChatMessages()" class="w-8 h-8 flex items-center justify-center hover:bg-rose-500/20 rounded-xl transition text-rose-400" title="Clear Chat">
+                            <i class="fas fa-trash-alt text-xs"></i>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Messages Scroll Area -->
+                <div id="messagesList" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-[radial-gradient(#ec4899_1px,transparent_1px)] [background-size:24px_24px] opacity-95">
+                    <!-- Dynamic Chat Messages Inserted Here -->
+                </div>
+
+                <!-- Blocked Contact Notice -->
+                <div id="blockedBanner" class="hidden bg-rose-950/90 border-t border-b border-rose-500/40 p-3 text-center backdrop-blur-md">
+                    <p class="text-xs font-extrabold text-rose-200 flex items-center justify-center gap-2">
+                        <i class="fas fa-ban text-rose-400"></i> Contact is blocked. Unblock to send messages.
+                    </p>
+                    <button onclick="toggleBlockContact()" class="mt-1 text-xs font-bold text-rose-300 underline hover:text-white transition">
+                        Tap here to Unblock
+                    </button>
+                </div>
+
+                <!-- Quoted Reply Preview Banner -->
+                <div id="replyBanner" class="hidden px-4 py-2.5 bg-black/40 border-t border-pink-500/20 flex justify-between items-center text-xs backdrop-blur-md">
+                    <div class="border-l-4 border-pink-500 pl-3">
+                        <span class="font-bold text-pink-400 block text-[11px]" id="replyTargetName">Replying to message</span>
+                        <span class="text-pink-200/70 truncate block max-w-md text-xs" id="replyTargetText">Text snippet</span>
+                    </div>
+                    <button onclick="cancelReply()" class="w-6 h-6 flex items-center justify-center text-pink-300 hover:text-white rounded-full bg-pink-500/20"><i class="fas fa-times text-xs"></i></button>
+                </div>
+
+                <!-- Message Input Bar -->
+                <footer id="chatInputFooter" class="p-3 bg-panel-bg flex items-center space-x-2 relative z-10 border-t border-pink-500/20">
+                    
+                    <!-- Emoji Keyboard Popup -->
+                    <div id="emojiPicker" class="hidden absolute bottom-16 left-4 bg-slate-950/90 shadow-2xl rounded-2xl p-3 border border-pink-500/30 w-72 grid grid-cols-6 gap-2 z-50 backdrop-blur-2xl">
+                        <span onclick="addEmoji('😊')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">😊</span>
+                        <span onclick="addEmoji('😂')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">😂</span>
+                        <span onclick="addEmoji('❤️')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">❤️</span>
+                        <span onclick="addEmoji('👍')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">👍</span>
+                        <span onclick="addEmoji('🔥')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">🔥</span>
+                        <span onclick="addEmoji('🎉')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">🎉</span>
+                        <span onclick="addEmoji('🌸')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">🌸</span>
+                        <span onclick="addEmoji('👑')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">👑</span>
+                        <span onclick="addEmoji('😍')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">😍</span>
+                        <span onclick="addEmoji('😭')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">😭</span>
+                        <span onclick="addEmoji('👏')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">👏</span>
+                        <span onclick="addEmoji('✨')" class="cursor-pointer text-xl hover:scale-125 transition text-center p-1">✨</span>
+                    </div>
+
+                    <button type="button" id="emojiBtn" onclick="toggleEmojiPicker()" class="w-9 h-9 flex items-center justify-center text-pink-400 hover:text-pink-300 text-lg rounded-xl hover:bg-pink-500/10 transition">
+                        <i class="far fa-smile"></i>
+                    </button>
+
+                    <!-- Image / Attachment Button -->
+                    <label id="attachmentBtn" class="w-9 h-9 flex items-center justify-center text-pink-400 hover:text-pink-300 text-lg rounded-xl hover:bg-pink-500/10 transition cursor-pointer">
+                        <i class="fas fa-paperclip"></i>
+                        <input type="file" id="mediaUpload" class="hidden" accept="image/*" onchange="handleFileUpload(event)">
+                    </label>
+
+                    <!-- Text Area Input -->
+                    <div class="flex-1 relative">
+                        <input id="messageInput" type="text" placeholder="Write a VIP message..." 
+                            onkeydown="if(event.key==='Enter') sendMessage()"
+                            class="w-full px-4 py-2.5 bg-black/40 text-xs rounded-xl focus:outline-none focus:ring-1 focus:ring-pink-500/50 border border-pink-500/20 text-pink-100 placeholder-pink-300/30 font-medium">
+                    </div>
+
+                    <!-- Voice Note Simulator Button -->
+                    <button type="button" id="voiceNoteBtn" onclick="toggleVoiceRecording()" class="w-9 h-9 text-pink-400 hover:text-pink-300 text-base rounded-xl hover:bg-pink-500/10 transition flex items-center justify-center">
+                        <i id="micIcon" class="fas fa-microphone"></i>
+                    </button>
+
+                    <!-- Send Button -->
+                    <button type="button" id="sendBtn" onclick="sendMessage()" class="w-10 h-10 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white rounded-xl transition flex items-center justify-center shadow-glow-pink">
+                        <i class="fas fa-paper-plane text-xs"></i>
+                    </button>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= MODALS & OVERLAYS ================= -->
+
+    <!-- FULLSCREEN STATUS VIEWER MODAL -->
+    <div id="statusViewerModal" class="hidden fixed inset-0 bg-black/95 z-50 flex flex-col justify-between p-4 md:p-8 backdrop-blur-2xl">
+        <div class="w-full max-w-md mx-auto space-y-3">
+            <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden">
+                <div id="statusProgress" class="bg-gradient-to-r from-pink-500 to-rose-400 h-full w-0"></div>
+            </div>
+            
+            <div class="flex justify-between items-center text-white pt-1">
+                <div class="flex items-center space-x-3">
+                    <img id="statusModalAvatar" src="" class="w-10 h-10 rounded-full border-2 border-pink-500 object-cover shadow-glow-pink">
+                    <div>
+                        <h4 id="statusModalName" class="font-extrabold text-sm text-pink-200">Name</h4>
+                        <span id="statusModalTime" class="text-[10px] text-pink-300/80 font-medium">Just now</span>
+                    </div>
+                </div>
+                <button onclick="closeStatusViewer()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 text-white"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+
+        <div class="flex-1 flex items-center justify-center my-4">
+            <img id="statusModalImage" src="" class="max-h-[68vh] max-w-full rounded-2xl shadow-2xl object-contain border border-pink-500/30">
+        </div>
+
+        <div class="w-full max-w-md mx-auto text-center pb-4">
+            <p id="statusModalCaption" class="text-pink-100 text-sm font-semibold mb-3">VIP Status update!</p>
+            <button onclick="closeStatusViewer()" class="px-6 py-2.5 bg-gradient-to-r from-pink-600 to-rose-600 text-white rounded-full text-xs font-black shadow-glow-pink">Close Story</button>
+        </div>
+    </div>
+
+    <!-- Call Overlay Modal -->
+    <div id="callModal" class="hidden fixed inset-0 glass-modal z-50 flex flex-col items-center justify-between p-8 text-white">
+        <div class="text-center mt-8">
+            <h2 id="callContactName" class="text-2xl font-black text-pink-300">Contact Name</h2>
+            <p id="callStatusText" class="text-pink-400 font-bold text-xs mt-1 animate-pulse">Encrypted Velvet Call Line...</p>
+        </div>
+
+        <div id="videoContainer" class="relative w-full max-w-sm h-80 bg-black/60 rounded-3xl overflow-hidden shadow-2xl border border-pink-500/40 flex items-center justify-center">
+            <img id="callAvatar" src="" class="w-32 h-32 rounded-full border-4 border-pink-500 object-cover shadow-glow-pink animate-pulse" alt="Call Avatar">
+        </div>
+
+        <div class="flex items-center space-x-6 mb-8">
+            <button onclick="endCall()" class="w-16 h-16 rounded-full bg-rose-600 hover:bg-rose-500 flex items-center justify-center text-2xl shadow-glow-rose hover:scale-105 transition"><i class="fas fa-phone-slash"></i></button>
+        </div>
+    </div>
+
+    <!-- Passcode Lock Modal -->
+    <div id="lockPinModal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="glass-modal rounded-3xl p-6 w-full max-w-xs text-center shadow-2xl border border-pink-500/30">
+            <div class="w-12 h-12 bg-pink-500/20 text-pink-400 rounded-full flex items-center justify-center mx-auto mb-3 text-base">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h3 class="text-base font-bold text-pink-300 mb-1">Protected VIP Chat</h3>
+            <p class="text-xs text-pink-200/70 mb-5">Enter PIN Code (Default: 1234)</p>
+            
+            <input type="password" id="pinInput" maxlength="4" placeholder="••••" 
+                class="w-36 text-center text-2xl tracking-widest font-mono py-2 bg-black/50 rounded-xl border border-pink-500/40 focus:outline-none mb-5 text-pink-300">
+
+            <div class="flex space-x-2">
+                <button onclick="closePinModal()" class="flex-1 py-2 bg-black/40 text-pink-300 rounded-xl text-xs font-semibold">Cancel</button>
+                <button onclick="verifyPinCode()" class="flex-1 py-2 bg-pink-600 text-white rounded-xl text-xs font-bold shadow-glow-pink">Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Contact Modal -->
+    <div id="addContactModal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="glass-modal rounded-3xl p-6 w-full max-w-md shadow-2xl border border-pink-500/30">
+            <h3 class="text-base font-extrabold mb-4 text-pink-300 flex items-center gap-2">
+                <i class="fas fa-user-plus text-pink-500"></i> Add New Contact
+            </h3>
+            <form onsubmit="handleAddNewContact(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-pink-300 mb-1">Contact Name</label>
+                    <input type="text" id="newContactName" required placeholder="e.g. Sara Khan" class="w-full px-3 py-2 bg-black/40 rounded-xl text-xs border border-pink-500/30 text-pink-100 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-pink-300 mb-1">Avatar Image URL</label>
+                    <input type="url" id="newContactAvatar" placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2 bg-black/40 rounded-xl text-xs border border-pink-500/30 text-pink-100 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-pink-300 mb-1">Initial Bio / Status</label>
+                    <input type="text" id="newContactBio" placeholder="Available" class="w-full px-3 py-2 bg-black/40 rounded-xl text-xs border border-pink-500/30 text-pink-100 focus:outline-none">
+                </div>
+                <div class="flex space-x-2 pt-2">
+                    <button type="button" onclick="closeAddContactModal()" class="flex-1 py-2.5 bg-black/40 text-pink-300 rounded-xl text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="flex-1 py-2.5 bg-pink-600 text-white rounded-xl text-xs font-bold shadow-glow-pink">Save Contact</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // User Profile State
+        let currentUserProfile = {
+            name: "Ayesha VIP",
+            phone: "+92 300 1234567",
+            email: "ayesha@vip.com",
+            bio: "Online & Ready",
+            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80"
+        };
+
+        // Contacts State
+        let contacts = [
+            { id: 1, name: "Miss Hafsa (Mentor)", avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80", bio: "Available", unread: 1, locked: false, blocked: false, messages: [
+                { id: 101, sender: "them", text: "Ayesha, have you reviewed the new Glassmorphism design layout?", time: "10:14 AM", reaction: null, replyTo: null },
+                { id: 102, sender: "me", text: "Yes Miss Hafsa, working on it right now with pink velvet effects!", time: "10:15 AM", reaction: "❤️", replyTo: null }
+            ]},
+            { id: 2, name: "Sara Frontend", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80", bio: "Coding...", unread: 0, locked: true, blocked: false, messages: [
+                { id: 201, sender: "them", text: "Check out this ultra-clean component snippet!", time: "Yesterday", reaction: null, replyTo: null }
+            ]}
+        ];
+
+        // Velvet Stories State
+        let statuses = [
+            { id: 1, name: "Miss Hafsa", avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&auto=format&fit=crop&q=80", caption: "Class session highlights! 💻", time: "2h ago", isMine: false }
+        ];
+
+        let activeContactId = null;
+        let currentFilter = 'all';
+        let pendingPinContactId = null;
+        let replyingToMessage = null;
+        let statusTimer = null;
+
+        // Gatekeeper Form Submission
+        function submitGatekeeperForm(event) {
+            event.preventDefault();
+            const name = document.getElementById('frontName').value.trim();
+            const phone = document.getElementById('frontPhone').value.trim();
+            const email = document.getElementById('frontEmail').value.trim();
+
+            currentUserProfile.name = name;
+            currentUserProfile.phone = phone;
+            currentUserProfile.email = email;
+
+            document.getElementById('myProfileName').innerHTML = `${name} <i class="fas fa-crown text-amber-400 text-xs"></i>`;
+            document.getElementById('myProfileBio').innerText = "Online & Ready";
+
+            document.getElementById('gatekeeperScreen').classList.add('hidden');
+            renderSidebarChats();
+            renderStatuses();
+        }
+
+        function openFrontGatekeeper() {
+            document.getElementById('frontName').value = currentUserProfile.name;
+            document.getElementById('frontPhone').value = currentUserProfile.phone;
+            document.getElementById('frontEmail').value = currentUserProfile.email;
+            document.getElementById('gatekeeperScreen').classList.remove('hidden');
+        }
+
+        // Render Sidebar Contact List
+        function renderSidebarChats() {
+            const chatList = document.getElementById('chatList');
+            chatList.innerHTML = '';
+
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = contacts.filter(c => {
+                const matchesSearch = c.name.toLowerCase().includes(searchTerm);
+                if(currentFilter === 'unread') return matchesSearch && c.unread > 0;
+                if(currentFilter === 'locked') return matchesSearch && c.locked;
+                if(currentFilter === 'blocked') return matchesSearch && c.blocked;
+                return matchesSearch;
+            });
+
+            if(filtered.length === 0) {
+                chatList.innerHTML = `<div class="p-8 text-center text-xs opacity-50 font-medium">No contacts match filter.</div>`;
+                return;
+            }
+
+            filtered.forEach(c => {
+                const lastMsg = c.messages.length > 0 ? c.messages[c.messages.length - 1].text : 'No messages yet';
+                const isActive = activeContactId === c.id;
+
+                const div = document.createElement('div');
+                div.className = `p-3.5 flex items-center space-x-3 cursor-pointer transition duration-200 ${isActive ? 'bg-pink-500/15 border-l-4 border-pink-500' : 'hover:bg-pink-500/5'}`;
+                div.onclick = () => selectContact(c.id);
+
+                div.innerHTML = `
+                    <div class="relative flex-shrink-0">
+                        <img src="${c.avatar}" class="w-12 h-12 rounded-full object-cover border border-pink-500/40">
+                        ${c.blocked ? '<span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-rose-500 rounded-full border-2 border-black flex items-center justify-center text-[7px] text-white"><i class="fas fa-ban"></i></span>' : '<span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-black"></span>'}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-baseline mb-0.5">
+                            <h4 class="font-extrabold text-xs truncate text-pink-200 flex items-center gap-1.5">
+                                ${c.name} ${c.locked ? '<i class="fas fa-lock text-[10px] text-amber-400"></i>' : ''}
+                            </h4>
+                            <span class="text-[10px] text-pink-300/50 font-medium">${c.messages.length > 0 ? c.messages[c.messages.length - 1].time : ''}</span>
+                        </div>
+                        <p class="text-[11px] truncate text-pink-200/60 font-medium">${lastMsg}</p>
+                    </div>
+                    ${c.unread > 0 ? `<span class="w-5 h-5 rounded-full bg-pink-600 text-white text-[10px] font-extrabold flex items-center justify-center shadow-glow-pink">${c.unread}</span>` : ''}
+                `;
+                chatList.appendChild(div);
+            });
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            ['all', 'unread', 'locked', 'blocked'].forEach(f => {
+                const btn = document.getElementById(`filter-${f}`);
+                if(f === filter) {
+                    btn.className = "px-3 py-1 text-[11px] rounded-xl bg-pink-600 text-white font-bold shadow-glow-pink";
+                } else {
+                    btn.className = "px-3 py-1 text-[11px] rounded-xl bg-black/30 text-pink-300 font-semibold hover:bg-pink-500/20 border border-pink-500/20";
+                }
+            });
+            renderSidebarChats();
+        }
+
+        function filterChats() {
+            renderSidebarChats();
+        }
+
+        function selectContact(id) {
+            const contact = contacts.find(c => c.id === id);
+            if(!contact) return;
+
+            if(contact.locked) {
+                pendingPinContactId = id;
+                document.getElementById('pinInput').value = '';
+                document.getElementById('lockPinModal').classList.remove('hidden');
+                return;
+            }
+
+            openActiveChat(id);
+        }
+
+        function verifyPinCode() {
+            const pin = document.getElementById('pinInput').value;
+            if(pin === '1234') {
+                closePinModal();
+                if(pendingPinContactId) {
+                    openActiveChat(pendingPinContactId);
+                    pendingPinContactId = null;
+                }
+            } else {
+                alert('Incorrect PIN code! Default is 1234');
+            }
+        }
+
+        function closePinModal() {
+            document.getElementById('lockPinModal').classList.add('hidden');
+            pendingPinContactId = null;
+        }
+
+        function openActiveChat(id) {
+            activeContactId = id;
+            const contact = contacts.find(c => c.id === id);
+            contact.unread = 0;
+
+            document.getElementById('noChatSelected').classList.add('hidden');
+            document.getElementById('activeChatContainer').classList.remove('hidden');
+
+            document.getElementById('chatHeaderAvatar').src = contact.avatar;
+            document.getElementById('chatHeaderName').innerText = contact.name;
+            document.getElementById('chatHeaderSubtext').innerHTML = contact.blocked ? '<span class="text-rose-400">Blocked Contact</span>' : '<i class="fas fa-circle text-[6px] animate-pulse"></i> Active Now';
+            
+            document.getElementById('headerLockIcon').className = contact.locked ? "fas fa-lock text-xs text-amber-400" : "fas fa-unlock text-xs";
+            document.getElementById('headerBlockIcon').className = contact.blocked ? "fas fa-user-check text-xs text-emerald-400" : "fas fa-ban text-xs text-rose-400";
+
+            if(contact.blocked) {
+                document.getElementById('blockedBanner').classList.remove('hidden');
+                document.getElementById('chatInputFooter').classList.add('hidden');
+            } else {
+                document.getElementById('blockedBanner').classList.add('hidden');
+                document.getElementById('chatInputFooter').classList.remove('hidden');
+            }
+
+            renderMessages();
+            renderSidebarChats();
+
+            if(window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('hidden');
+            }
+        }
+
+        function backToSidebar() {
+            document.getElementById('sidebar').classList.remove('hidden');
+            document.getElementById('activeChatContainer').classList.add('hidden');
+            activeContactId = null;
+        }
+
+        // Render Chat Messages with Reactions, Reply, Delete Options
+        function renderMessages() {
+            const contact = contacts.find(c => c.id === activeContactId);
+            if(!contact) return;
+
+            const list = document.getElementById('messagesList');
+            list.innerHTML = '';
+
+            contact.messages.forEach((msg) => {
+                const isMe = msg.sender === 'me';
+                const div = document.createElement('div');
+                div.className = `flex flex-col ${isMe ? 'items-end' : 'items-start'} relative group`;
+
+                let replyHtml = '';
+                if(msg.replyTo) {
+                    replyHtml = `
+                        <div class="bg-black/25 border-l-2 border-pink-400 px-2.5 py-1 mb-1.5 rounded-lg text-[10px] opacity-80">
+                            <span class="font-extrabold block text-pink-300">${msg.replyTo.sender === 'me' ? 'You' : contact.name}</span>
+                            <span class="truncate block max-w-[200px] text-pink-100">${msg.replyTo.text}</span>
+                        </div>
+                    `;
+                }
+
+                let contentHtml = `<p class="text-xs leading-relaxed font-medium">${msg.text}</p>`;
+                if(msg.image) {
+                    contentHtml += `<img src="${msg.image}" class="mt-2 rounded-xl max-w-xs object-cover border border-pink-500/30">`;
+                }
+
+                let reactionHtml = '';
+                if(msg.reaction) {
+                    reactionHtml = `<span class="absolute -bottom-2 ${isMe ? 'left-2' : 'right-2'} bg-slate-950 border border-pink-500/40 px-2 py-0.5 rounded-full text-[10px] shadow-glow-pink">${msg.reaction}</span>`;
+                }
+
+                div.innerHTML = `
+                    <div class="max-w-md px-4 py-3 rounded-2xl ${isMe ? 'bg-bubble-out rounded-br-none' : 'bg-bubble-in rounded-bl-none'} shadow-sm relative transition duration-200">
+                        ${replyHtml}
+                        ${contentHtml}
+                        <div class="flex items-center justify-end space-x-1.5 mt-1">
+                            <span class="text-[9px] opacity-70 font-medium">${msg.time}</span>
+                            ${isMe ? '<i class="fas fa-check-double text-[9px] text-pink-200"></i>' : ''}
+                        </div>
+                        ${reactionHtml}
+                    </div>
+
+                    <!-- On-Hover Actions Toolbar (Reply, React, Delete) -->
+                    <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center space-x-2 mt-1 px-1 text-[10px] text-pink-300 font-semibold">
+                        <button onclick="setReplyToMessage(${msg.id})" class="hover:text-white flex items-center gap-1 bg-black/40 px-2 py-0.5 rounded-md border border-pink-500/20"><i class="fas fa-reply text-[9px]"></i> Reply</button>
+                        <button onclick="reactToMessage(${msg.id}, '❤️')" class="hover:scale-125 transition">❤️</button>
+                        <button onclick="reactToMessage(${msg.id}, '👍')" class="hover:scale-125 transition">👍</button>
+                        <button onclick="reactToMessage(${msg.id}, '🔥')" class="hover:scale-125 transition">🔥</button>
+                        <button onclick="deleteMessage(${msg.id})" class="hover:text-rose-400 flex items-center gap-1 bg-black/40 px-2 py-0.5 rounded-md border border-rose-500/20"><i class="fas fa-trash text-[9px]"></i></button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+
+            list.scrollTop = list.scrollHeight;
+        }
+
+        // Quoted Reply Logic
+        function setReplyToMessage(msgId) {
+            const contact = contacts.find(c => c.id === activeContactId);
+            const msg = contact.messages.find(m => m.id === msgId);
+            if(!msg) return;
+
+            replyingToMessage = msg;
+            document.getElementById('replyBanner').classList.remove('hidden');
+            document.getElementById('replyTargetName').innerText = msg.sender === 'me' ? 'You' : contact.name;
+            document.getElementById('replyTargetText').innerText = msg.text;
+            document.getElementById('messageInput').focus();
+        }
+
+        function cancelReply() {
+            replyingToMessage = null;
+            document.getElementById('replyBanner').classList.add('hidden');
+        }
+
+        // Reaction Logic
+        function reactToMessage(msgId, emoji) {
+            const contact = contacts.find(c => c.id === activeContactId);
+            const msg = contact.messages.find(m => m.id === msgId);
+            if(msg) {
+                msg.reaction = msg.reaction === emoji ? null : emoji;
+                renderMessages();
+            }
+        }
+
+        // Delete Message Logic
+        function deleteMessage(msgId) {
+            const contact = contacts.find(c => c.id === activeContactId);
+            contact.messages = contact.messages.filter(m => m.id !== msgId);
+            renderMessages();
+            renderSidebarChats();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if(!text || !activeContactId) return;
+
+            const contact = contacts.find(c => c.id === activeContactId);
+            if(contact.blocked) return;
+
+            const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            const newMsg = {
+                id: Date.now(),
+                sender: 'me',
+                text: text,
+                time: timeStr,
+                reaction: null,
+                replyTo: replyingToMessage ? { sender: replyingToMessage.sender, text: replyingToMessage.text } : null
+            };
+
+            contact.messages.push(newMsg);
+            cancelReply();
+            input.value = '';
+            renderMessages();
+            renderSidebarChats();
+
+            // Auto Response Simulator
+            setTimeout(() => {
+                if(activeContactId === contact.id) {
+                    contact.messages.push({
+                        id: Date.now() + 1,
+                        sender: 'them',
+                        text: `Received loud and clear! ✨ "${text}"`,
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        reaction: null,
+                        replyTo: null
+                    });
+                    renderMessages();
+                    renderSidebarChats();
+                }
+            }, 1200);
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if(!file || !activeContactId) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contact = contacts.find(c => c.id === activeContactId);
+                const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                contact.messages.push({
+                    id: Date.now(),
+                    sender: 'me',
+                    text: 'Shared a media item 📷',
+                    image: e.target.result,
+                    time: timeStr,
+                    reaction: null,
+                    replyTo: null
+                });
+                renderMessages();
+                renderSidebarChats();
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // Velvet Stories / Status Logic
+        function renderStatuses() {
+            const list = document.getElementById('statusList');
+            list.innerHTML = '';
+
+            // User's Own Status Ring (First Item)
+            const myStatusDiv = document.createElement('div');
+            myStatusDiv.className = "flex flex-col items-center cursor-pointer flex-shrink-0 group";
+            myStatusDiv.onclick = triggerStatusUpload;
+            myStatusDiv.innerHTML = `
+                <div class="relative w-13 h-13 rounded-full p-0.5 bg-gradient-to-tr from-pink-500 via-rose-400 to-amber-300 group-hover:scale-105 transition shadow-glow-pink">
+                    <img src="${currentUserProfile.avatar}" class="w-12 h-12 rounded-full object-cover border-2 border-black">
+                    <span class="absolute bottom-0 right-0 w-4 h-4 bg-pink-600 rounded-full border border-black flex items-center justify-center text-[10px] text-white"><i class="fas fa-plus"></i></span>
+                </div>
+                <span class="text-[10px] font-bold text-pink-300 mt-1 truncate max-w-[60px]">My Status</span>
+            `;
+            list.appendChild(myStatusDiv);
+
+            // Contacts Stories
+            statuses.forEach(s => {
+                const div = document.createElement('div');
+                div.className = "flex flex-col items-center cursor-pointer flex-shrink-0 group";
+                div.onclick = () => openStatusViewer(s.id);
+                div.innerHTML = `
+                    <div class="w-13 h-13 rounded-full p-0.5 bg-gradient-to-tr from-pink-500 via-rose-500 to-pink-300 group-hover:scale-105 transition shadow-glow-pink">
+                        <img src="${s.avatar}" class="w-12 h-12 rounded-full object-cover border-2 border-black">
+                    </div>
+                    <span class="text-[10px] font-bold text-pink-200/80 mt-1 truncate max-w-[60px]">${s.name}</span>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function triggerStatusUpload() {
+            document.getElementById('statusUploadInput').click();
+        }
+
+        function handleAddStatus(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                statuses.unshift({
+                    id: Date.now(),
+                    name: currentUserProfile.name,
+                    avatar: currentUserProfile.avatar,
+                    image: e.target.result,
+                    caption: "My VIP Velvet Story ✨",
+                    time: "Just now",
+                    isMine: true
+                });
+                renderStatuses();
+                openStatusViewer(statuses[0].id);
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function openStatusViewer(id) {
+            const status = statuses.find(s => s.id === id);
+            if(!status) return;
+
+            document.getElementById('statusModalAvatar').src = status.avatar;
+            document.getElementById('statusModalName').innerText = status.name;
+            document.getElementById('statusModalTime').innerText = status.time;
+            document.getElementById('statusModalImage').src = status.image;
+            document.getElementById('statusModalCaption').innerText = status.caption;
+
+            document.getElementById('statusViewerModal').classList.remove('hidden');
+            
+            const prog = document.getElementById('statusProgress');
+            prog.className = "bg-gradient-to-r from-pink-500 to-rose-400 h-full w-0 animate-status-progress";
+            
+            clearTimeout(statusTimer);
+            statusTimer = setTimeout(() => {
+                closeStatusViewer();
+            }, 5000);
+        }
+
+        function closeStatusViewer() {
+            clearTimeout(statusTimer);
+            document.getElementById('statusViewerModal').classList.add('hidden');
+        }
+
+        // Theme Switcher Logic
+        let currentThemeIndex = 0;
+        const themes = ['pink', 'dark', 'light'];
+        function cycleTheme() {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            document.documentElement.className = themes[currentThemeIndex];
+        }
+
+        function toggleEmojiPicker() {
+            document.getElementById('emojiPicker').classList.toggle('hidden');
+        }
+
+        function addEmoji(emoji) {
+            document.getElementById('messageInput').value += emoji;
+            toggleEmojiPicker();
+        }
+
+        function toggleChatLockCurrent() {
+            if(!activeContactId) return;
+            const contact = contacts.find(c => c.id === activeContactId);
+            contact.locked = !contact.locked;
+            openActiveChat(activeContactId);
+            renderSidebarChats();
+        }
+
+        function toggleBlockContact() {
+            if(!activeContactId) return;
+            const contact = contacts.find(c => c.id === activeContactId);
+            contact.blocked = !contact.blocked;
+            openActiveChat(activeContactId);
+            renderSidebarChats();
+        }
+
+        function clearChatMessages() {
+            if(!activeContactId) return;
+            if(confirm("Clear all chat history for this contact?")) {
+                const contact = contacts.find(c => c.id === activeContactId);
+                contact.messages = [];
+                renderMessages();
+                renderSidebarChats();
+            }
+        }
+
+        function startCall(type) {
+            if(!activeContactId) return;
+            const contact = contacts.find(c => c.id === activeContactId);
+            document.getElementById('callContactName').innerText = contact.name;
+            document.getElementById('callAvatar').src = contact.avatar;
+            document.getElementById('callStatusText').innerText = type === 'video' ? 'Connecting Secure Video Call...' : 'Ringing Voice Line...';
+            document.getElementById('callModal').classList.remove('hidden');
+        }
+
+        function endCall() {
+            document.getElementById('callModal').classList.add('hidden');
+        }
+
+        function toggleVoiceRecording() {
+            const icon = document.getElementById('micIcon');
+            if(icon.classList.contains('text-rose-500')) {
+                icon.className = "fas fa-microphone";
+                alert("Voice note recorded & attached!");
+            } else {
+                icon.className = "fas fa-circle text-rose-500 animate-pulse";
+            }
+        }
+
+        function openAddContactModal() {
+            document.getElementById('addContactModal').classList.remove('hidden');
+        }
+
+        function closeAddContactModal() {
+            document.getElementById('addContactModal').classList.add('hidden');
+        }
+
+        function handleAddNewContact(event) {
+            event.preventDefault();
+            const name = document.getElementById('newContactName').value.trim();
+            const avatar = document.getElementById('newContactAvatar').value.trim() || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80";
+            const bio = document.getElementById('newContactBio').value.trim() || "Available";
+
+            const newContact = {
+                id: contacts.length + 1,
+                name,
+                avatar,
+                bio,
+                unread: 0,
+                locked: false,
+                blocked: false,
+                messages: [{ id: Date.now(), sender: 'them', text: `Welcome to my VIP chat!`, time: 'Just now', reaction: null, replyTo: null }]
+            };
+
+            contacts.push(newContact);
+            closeAddContactModal();
+            renderSidebarChats();
+            selectContact(newContact.id);
+        }
+
+        window.onload = function() {
+            renderSidebarChats();
+            renderStatuses();
+        };
+    </script>
+</body>
+</html>
